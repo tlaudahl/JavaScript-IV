@@ -22,34 +22,48 @@ class Instructor extends Person {
     grade(student, subject) {
         return `${student.name} receives a perfect score on ${subject}`
     }
+    studentGrade(student) {
+        let score = Math.floor(Math.random() * 100);
+        // Make sure score + current grade cannot go over 100
+        // and score - current grade cannot go under 0
+        // if (student.grade - score > 0){
+        //         return student.grade -= score, student.checkGrad();
+        // }
+        // less than or equal to 5 - subtract points
+        // greater than 5 -- add points
+        let random = Math.floor(Math.random() * 11)
+        if (student.grade === 100) {
+            student.grade -= score;
+            return `${student.name} now has a grade of ${student.grade}`;
+        }
+        if (random <= 5) {
+            if (student.grade - score > 0) {
+                student.grade -= score;
+                return `${student.name} now has a grade of ${student.grade}`;
+            } else {
+                return `${student.name}'s grade did not change, it is currently ${student.grade}`;
+            }
+        }
+        if(random > 5) {
+            if (student.grade + score > 100) {
+                return `${student.name}'s grade did not change, it is currently ${student.grade}`;
+            } else {
+                student.grade += score;
+                return `${student.name} now has a grade of ${student.grade}`;
+            }
+        }
+    }
 }
 
-const fred = new Instructor({
-    name: 'Fred',
-    location: 'Bedrock',
-    age: 37,
-    favLanguage: 'JavaScript',
-    specialty: 'Front-end',
-    catchPhrase: 'Don\'t forget the homies'
-});
+const intructorTest = new Instructor({
+    name: 'Test',
+    age: 24,
+    location: 'Shakopee',
+    specialty: 'Grading',
+    favLanguage: 'Alphabet',
+    catchPhrase: 'I don\'t grade hard, I grade accordingly'
+})
 
-const adam = new Instructor({
-    name: 'Adam',
-    location: 'Detroit Lakes',
-    age: 29,
-    favLanguage: 'CSS',
-    specialty: 'Front-end',
-    catchPhrase: 'Wide Receiver 4 Life'
-});
-
-const stefon = new Instructor({
-    name: 'Stefon',
-    location: 'Minnesota',
-    age: 25,
-    favLanguage: 'Python',
-    specialty: 'Data Science',
-    catchPhrase: 'Minneapolis Miracle'
-});
 
 class ProjectManager extends Instructor {
     constructor(pmAttrs) {
@@ -90,15 +104,16 @@ const kevin = new ProjectManager({
     favInstructor: 'Mike Zimmer',
 })
 
-console.log(mike.);
+// console.log(kevin.demo('Offensive Coordinator Coordination'));
 
 
 class Student extends Person {
     constructor(studentAttrs) {
         super(studentAttrs);
-        this.previousBackground = studentAttrs.background;
+        this.previousBackground = studentAttrs.previousBackground;
         this.className = studentAttrs.className;
         this.subjects = studentAttrs.subjects;
+        this.grade = 100;
     }
     listSubjects() {
         this.subjects.forEach(e => console.log(e))
@@ -109,6 +124,13 @@ class Student extends Person {
     sprintChallenge(subject) {
         return `${this.name} has begun sprint challenge on ${subject}`
     }
+    checkGrad() {
+        if (this.grade < 70) {
+            return `${this.name} is not eligible to graduate with a grade of ${this.grade}`
+        } else {
+            return `Congratulations! ${this.name}`
+        }
+    } 
 }
 
 const dalvin = new Student({
@@ -120,7 +142,11 @@ const dalvin = new Student({
     subjects: ['Html', 'CSS', 'JavaScript', 'LESS']
 })
 
-// console.log(mike.debugsCode(dalvin, 'How to catch')); ====> PM Mike debugeCode() Method
+
+console.log(intructorTest.studentGrade(dalvin));
+
+
+// console.log(mike.debugsCode(dalvin, 'How to catch')); // ====> PM Mike debugeCode() Method
 
 // console.log(dalvin.listSubjects());
 // console.log(dalvin.pRAssignment('JavaScript'));
@@ -140,3 +166,11 @@ const kyle = new Student({
 // console.log(kyle.pRAssignment('JavaScript'));
 // console.log(kyle.speak());
 
+/*
+* Stretch Problem
+* Extend the functionality of the Student by adding a prop called grade and setting it equal to a number between 1-100.
+* Now that our students have a grade build out a method on the Instructor (this will be used by BOTH instructors and PM's) that will randomly add or subtract points to a student's grade. Math.random will help.
+* Add a graduate method to a student.
+    - This method, when called, will check the grade of the student and see if they're ready to graduate from Lambda School
+    - If the student's grade is above a 70% let them graduate! Otherwise go back to grading their assignments to increase their score.
+*/
