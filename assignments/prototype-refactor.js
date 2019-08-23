@@ -102,3 +102,95 @@ console.log(archer.language); // Elvish
 console.log(archer.greet()); // Lilith offers a greeting in Elvish.
 console.log(mage.takeDamage()); // Bruce took damage.
 console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+
+
+
+
+class Villain extends Humanoid{
+    constructor(character) {
+        super(character);
+        this.createdAt = character.createdAt;
+        this.name = character.name;
+        this.dimensions = character.dimensions;
+        this.healthPoints = 100;
+        this.team = 'Villain';
+        this.weapon = 'Long Sword',
+        this.language = 'Elvin';
+    }
+    attack(hero) {
+        let damage = Math.floor(Math.random() * 11);
+        if (hero === null) {
+            return 'No such target';
+        }
+        if (damage === 0) {
+            return 'You Missed!';
+        } else if (hero.healthPoints - damage <= 0) {
+            console.log(`You eliminated ${hero.name} with a hit for ${damage}!`);
+            hero = null
+        } else {
+            hero.healthPoints -= damage;
+            return `You attacked ${hero.name} for ${damage} health points, they now have ${hero.healthPoints} health points left`
+        }
+    }
+    checkDeath(hero) {
+        if (this.healthPoints < 0) {
+            console.log(`You are eliminated, goodbye.`)
+            villain = null;
+        } else {
+            return `You are still alive with ${this.healthPoints} health points left`;
+        }
+    }
+}
+
+class Hero extends Humanoid{
+    constructor(character) {
+        super(character);
+        this.createdAt = character.createdAt;
+        this.name = character.name;
+        this.dimensions = character.dimensions;
+        this.healthPoints = 100;
+        this.team = 'Hero';
+        this.weapon = 'Sword',
+        this.language = 'Elvin';
+    }
+    attack(villain) {
+        let damage = Math.floor(Math.random() * 11);
+        if (villain === null) {
+            return 'No such target';
+        }
+        if (damage === 0) {
+            return 'You Missed!';
+        } else if (villain.healthPoints - damage <= 0) {
+            console.log(`You eliminated ${villain.name} with a hit for ${damage}!`);
+            villain = null
+        } else {
+            villain.healthPoints -= damage;
+            return `You attacked ${villain.name} for ${damage} health points, they now have ${villain.healthPoints} health points left`
+        }
+    }
+    checkDeath(hero) {
+        if (this.healthPoints < 0) {
+            console.log(`You are eliminated, goodbye.`)
+            hero = null;
+        } else {
+            return `You are still alive with ${this.healthPoints} health points left`;
+        }
+    }
+}
+
+let hero1 = new Hero({
+    createdAt: Date.now(),
+    name: 'Hero',
+    dimensions: [3,1,6],
+})
+
+let villain1 = new Villain({
+    createdAt: Date.now(),
+    name: 'Villain',
+    dimensions: [2,4,2],
+})
+
+console.log(hero1);
+console.log(villain1);
+
+console.log(hero1.attack(villain1));
